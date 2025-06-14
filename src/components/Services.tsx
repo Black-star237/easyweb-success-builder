@@ -15,8 +15,7 @@ const Services = () => {
       title: "Site vitrine",
       description: "Présentez votre entreprise avec élégance et professionnalisme",
       features: ["Design responsive", "SEO optimisé", "Formulaire de contact", "Google Analytics"],
-      originalPrice: "À partir de 150 000 FCFA",
-      promotionalPrice: "À partir de 75 000 FCFA",
+      price: "À partir de 10 000 FCFA",
       isOnPromotion: true
     },
     {
@@ -24,8 +23,7 @@ const Services = () => {
       title: "E-commerce",
       description: "Vendez en ligne avec une boutique moderne et sécurisée",
       features: ["Catalogue produits", "Panier d'achat", "Paiement sécurisé", "Gestion commandes"],
-      originalPrice: "À partir de 300 000 FCFA",
-      promotionalPrice: "À partir de 150 000 FCFA",
+      price: "À partir de 10 000 FCFA",
       isOnPromotion: true
     },
     {
@@ -33,16 +31,15 @@ const Services = () => {
       title: "Maintenance & SEO",
       description: "Maintenez et optimisez votre présence en ligne",
       features: ["Mises à jour", "Sauvegarde", "Optimisation SEO", "Support technique"],
-      price: "À partir de 25 000 FCFA/mois",
-      isOnPromotion: false
+      price: "3 000 FCFA/mois",
+      isOnPromotion: true
     },
     {
       icon: RefreshCw,
       title: "Refonte de site",
       description: "Modernisez votre site existant avec les dernières technologies",
       features: ["Audit complet", "Nouveau design", "Migration données", "Formation"],
-      originalPrice: "À partir de 200 000 FCFA",
-      promotionalPrice: "À partir de 100 000 FCFA",
+      price: "À partir de 10 000 FCFA",
       isOnPromotion: true
     }
   ];
@@ -63,7 +60,7 @@ const Services = () => {
             Des solutions web complètes adaptées à vos besoins et votre budget
           </p>
           <p className="text-lg text-red-600 font-semibold mt-2">
-            Profitez de -50% sur nos services jusqu'au 31 janvier !
+            Prix promotionnels jusqu'au 31 janvier !
           </p>
         </div>
 
@@ -80,7 +77,7 @@ const Services = () => {
             >
               {service.isOnPromotion && (
                 <Badge className="absolute -top-2 -right-2 bg-red-600 text-white z-10 animate-pulse">
-                  -50%
+                  PROMO
                 </Badge>
               )}
               
@@ -108,27 +105,16 @@ const Services = () => {
                 
                 <div className="pt-4 border-t border-gray-200">
                   <div className="mb-4">
-                    {service.isOnPromotion ? (
-                      <div className="space-y-1">
-                        <div className="text-lg font-bold text-red-600 group-hover:scale-105 transition-transform duration-300">
-                          {service.promotionalPrice}
-                        </div>
-                        <div className="text-sm text-gray-500 line-through">
-                          {service.originalPrice}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-lg font-bold text-red-600 group-hover:scale-105 transition-transform duration-300">
-                        {service.price}
-                      </div>
-                    )}
+                    <div className="text-lg font-bold text-red-600 group-hover:scale-105 transition-transform duration-300">
+                      {service.price}
+                    </div>
                   </div>
                   
                   <Button 
                     className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                     onClick={() => window.open('https://wa.me/237674833400', '_blank')}
                   >
-                    {service.isOnPromotion ? 'Profiter de la promo' : 'Demander un devis'}
+                    Profiter de la promo
                   </Button>
                 </div>
               </CardContent>
