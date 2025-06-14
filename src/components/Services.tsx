@@ -1,0 +1,107 @@
+
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Monitor, ShoppingCart, Search, RefreshCw } from 'lucide-react';
+
+const Services = () => {
+  const services = [
+    {
+      icon: Monitor,
+      title: "Site vitrine",
+      description: "Présentez votre entreprise avec élégance et professionnalisme",
+      features: ["Design responsive", "SEO optimisé", "Formulaire de contact", "Google Analytics"],
+      price: "À partir de 150 000 FCFA"
+    },
+    {
+      icon: ShoppingCart,
+      title: "E-commerce",
+      description: "Vendez en ligne avec une boutique moderne et sécurisée",
+      features: ["Catalogue produits", "Panier d'achat", "Paiement sécurisé", "Gestion commandes"],
+      price: "À partir de 300 000 FCFA"
+    },
+    {
+      icon: Search,
+      title: "Maintenance & SEO",
+      description: "Maintenez et optimisez votre présence en ligne",
+      features: ["Mises à jour", "Sauvegarde", "Optimisation SEO", "Support technique"],
+      price: "À partir de 25 000 FCFA/mois"
+    },
+    {
+      icon: RefreshCw,
+      title: "Refonte de site",
+      description: "Modernisez votre site existant avec les dernières technologies",
+      features: ["Audit complet", "Nouveau design", "Migration données", "Formation"],
+      price: "À partir de 200 000 FCFA"
+    }
+  ];
+
+  return (
+    <section id="services" className="py-20 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Nos Services
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Des solutions web complètes adaptées à vos besoins et votre budget
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {services.map((service, index) => (
+            <Card key={index} className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 bg-white border-0 shadow-md">
+              <CardHeader className="text-center pb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 text-red-600 rounded-full mb-4 mx-auto">
+                  <service.icon size={32} />
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-900">
+                  {service.title}
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  {service.description}
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="space-y-4">
+                <ul className="space-y-2">
+                  {service.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center text-sm text-gray-600">
+                      <div className="w-2 h-2 bg-red-600 rounded-full mr-3"></div>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                
+                <div className="pt-4 border-t border-gray-200">
+                  <div className="text-lg font-bold text-red-600 mb-4">
+                    {service.price}
+                  </div>
+                  
+                  <Button 
+                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold transition-all duration-300"
+                    onClick={() => window.open('https://wa.me/237674833400', '_blank')}
+                  >
+                    Demander un devis
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="text-center mt-16">
+          <Button 
+            size="lg"
+            className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+            onClick={() => window.open('https://wa.me/237674833400', '_blank')}
+          >
+            Discutons de votre projet sur WhatsApp
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Services;
