@@ -19,13 +19,18 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center">
+          {/* Logo + Brand Name */}
+          <div className="flex items-center space-x-3">
             <img 
               src="/lovable-uploads/e326e6f8-eb14-4e87-a39d-52531111fe9b.png" 
               alt="EasyWeb Logo" 
               className="h-8 w-auto"
             />
+            <div className="flex items-center">
+              <span className="text-2xl font-bold text-gray-900">Easy</span>
+              <span className="text-2xl font-bold text-red-600">Web</span>
+              <span className="text-xs text-gray-600 ml-1 align-top">™</span>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
