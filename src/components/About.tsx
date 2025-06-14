@@ -66,20 +66,20 @@ const About = () => {
             <div className="lg:col-span-1">
               <div className="w-48 h-48 bg-gradient-to-br from-red-100 to-orange-100 rounded-full mx-auto flex items-center justify-center">
                 <div className="w-40 h-40 bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-4xl font-bold text-gray-600">FA</span>
+                  <span className="text-4xl font-bold text-gray-600">BF</span>
                 </div>
               </div>
             </div>
             
             <div className="lg:col-span-2 space-y-4">
               <h3 className="text-3xl font-bold text-gray-900">
-                Frank Assolo
+                Boris Frank
               </h3>
               <p className="text-xl text-red-600 font-semibold">
                 Fondateur & Développeur Principal
               </p>
               <p className="text-gray-600 leading-relaxed">
-                Jeune entrepreneur passionné par les nouvelles technologies, Frank a fondé EasyWeb 
+                Jeune entrepreneur passionné par les nouvelles technologies, Boris a fondé EasyWeb 
                 avec la vision de rendre le web accessible à tous. Fort de plusieurs années d'expérience 
                 en développement web, il accompagne personnellement chaque client dans la réalisation 
                 de ses projets digitaux.
