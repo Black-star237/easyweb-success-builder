@@ -3,8 +3,11 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Monitor, ShoppingCart, Search, RefreshCw } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Services = () => {
+  const [ref, isVisible] = useScrollAnimation();
+
   const services = [
     {
       icon: Monitor,
@@ -37,9 +40,9 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-gray-50">
+    <section id="services" className="py-20 bg-gray-50" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Nos Services
           </h2>
@@ -50,12 +53,20 @@ const Services = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 bg-white border-0 shadow-md">
+            <Card 
+              key={index} 
+              className={`hover:shadow-xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 bg-white border-0 shadow-md group ${
+                isVisible 
+                  ? `animate-scale-in stagger-${index + 2}` 
+                  : 'opacity-0 scale-90'
+              }`}
+              style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
+            >
               <CardHeader className="text-center pb-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 text-red-600 rounded-full mb-4 mx-auto">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 text-red-600 rounded-full mb-4 mx-auto group-hover:bg-red-600 group-hover:text-white transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
                   <service.icon size={32} />
                 </div>
-                <CardTitle className="text-xl font-bold text-gray-900">
+                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-red-600 transition-colors duration-300">
                   {service.title}
                 </CardTitle>
                 <CardDescription className="text-gray-600">
@@ -66,20 +77,20 @@ const Services = () => {
               <CardContent className="space-y-4">
                 <ul className="space-y-2">
                   {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-sm text-gray-600">
-                      <div className="w-2 h-2 bg-red-600 rounded-full mr-3"></div>
+                    <li key={idx} className="flex items-center text-sm text-gray-600 transform transition-all duration-300 hover:translate-x-2">
+                      <div className="w-2 h-2 bg-red-600 rounded-full mr-3 group-hover:scale-125 transition-transform duration-300"></div>
                       {feature}
                     </li>
                   ))}
                 </ul>
                 
                 <div className="pt-4 border-t border-gray-200">
-                  <div className="text-lg font-bold text-red-600 mb-4">
+                  <div className="text-lg font-bold text-red-600 mb-4 group-hover:scale-105 transition-transform duration-300">
                     {service.price}
                   </div>
                   
                   <Button 
-                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold transition-all duration-300"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                     onClick={() => window.open('https://wa.me/237674833400', '_blank')}
                   >
                     Demander un devis
@@ -90,10 +101,10 @@ const Services = () => {
           ))}
         </div>
 
-        <div className="text-center mt-16">
+        <div className={`text-center mt-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'}`}>
           <Button 
             size="lg"
-            className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+            className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"
             onClick={() => window.open('https://wa.me/237674833400', '_blank')}
           >
             Discutons de votre projet sur WhatsApp

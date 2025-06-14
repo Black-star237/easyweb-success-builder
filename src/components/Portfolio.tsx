@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Portfolio = () => {
   const [filter, setFilter] = useState('all');
+  const [ref, isVisible] = useScrollAnimation();
 
   const projects = [
     {
@@ -50,9 +52,9 @@ const Portfolio = () => {
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
 
   return (
-    <section id="portfolio" className="py-20 bg-white">
+    <section id="portfolio" className="py-20 bg-white" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Nos Réalisations
           </h2>
@@ -61,12 +63,12 @@ const Portfolio = () => {
           </p>
 
           {/* Filter buttons */}
-          <div className="flex justify-center gap-4 mb-8">
+          <div className={`flex justify-center gap-4 mb-8 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up stagger-1' : 'opacity-0 translate-y-8'}`}>
             {categories.map((category) => (
               <Button
                 key={category.key}
                 variant={filter === category.key ? "default" : "outline"}
-                className={`rounded-full px-6 py-2 transition-all duration-300 ${
+                className={`rounded-full px-6 py-2 transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
                   filter === category.key 
                     ? 'bg-red-600 hover:bg-red-700 text-white' 
                     : 'border-red-600 text-red-600 hover:bg-red-600 hover:text-white'
@@ -80,17 +82,25 @@ const Portfolio = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <Card key={project.id} className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white border-0 shadow-md">
+          {filteredProjects.map((project, index) => (
+            <Card 
+              key={project.id} 
+              className={`group overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 bg-white border-0 shadow-md ${
+                isVisible 
+                  ? `animate-scale-in stagger-${index + 2}` 
+                  : 'opacity-0 scale-90'
+              }`}
+              style={{ animationDelay: `${index * 0.1 + 0.4}s` }}
+            >
               <div className="relative overflow-hidden">
                 <img 
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-125 group-hover:rotate-2"
                 />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                   <Button 
-                    className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold"
+                    className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
                     onClick={() => window.open('https://wa.me/237674833400', '_blank')}
                   >
                     Vous voulez le même ?
@@ -99,7 +109,7 @@ const Portfolio = () => {
               </div>
               
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-300">
                   {project.title}
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -110,7 +120,7 @@ const Portfolio = () => {
                   {project.tech.map((tech, idx) => (
                     <span 
                       key={idx}
-                      className="px-3 py-1 bg-red-100 text-red-600 text-sm rounded-full font-medium"
+                      className="px-3 py-1 bg-red-100 text-red-600 text-sm rounded-full font-medium transform transition-all duration-300 hover:scale-110 hover:bg-red-600 hover:text-white"
                     >
                       {tech}
                     </span>
@@ -121,10 +131,10 @@ const Portfolio = () => {
           ))}
         </div>
 
-        <div className="text-center mt-16">
+        <div className={`text-center mt-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'}`}>
           <Button 
             size="lg"
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"
             onClick={() => window.open('https://wa.me/237674833400', '_blank')}
           >
             Voir plus de projets
