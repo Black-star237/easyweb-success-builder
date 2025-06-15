@@ -61,7 +61,7 @@ const Hero = () => {
           <div className="relative animate-slide-in-right">
             <div className="bg-gradient-to-tr from-red-100 to-orange-100 rounded-3xl p-8 shadow-2xl transform transition-all duration-500 hover:scale-105 hover:rotate-1">
               <img 
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+                src="https://xtbceoemzdauoiytxwzd.supabase.co/storage/v1/object/public/bastringue//immg.png"
                 alt="Développement web professionnel"
                 className="w-full h-auto rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105"
               />
