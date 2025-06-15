@@ -16,10 +16,13 @@ const Portfolio = () => {
   const [current, setCurrent] = useState(0);
 
   console.log('Portfolio - Projects loaded:', projects);
+  console.log('Portfolio - Loading state:', isLoading);
+  console.log('Portfolio - Error state:', error);
+  console.log('Portfolio - Projects count:', projects.length);
 
   // Auto-scroll functionality
   useEffect(() => {
-    if (!api) return;
+    if (!api || projects.length === 0) return;
 
     const autoScroll = setInterval(() => {
       if (api.canScrollNext()) {
@@ -30,7 +33,7 @@ const Portfolio = () => {
     }, 4000);
 
     return () => clearInterval(autoScroll);
-  }, [api]);
+  }, [api, projects.length]);
 
   // Track current slide
   useEffect(() => {
@@ -56,12 +59,43 @@ const Portfolio = () => {
   }
 
   if (error) {
+    console.error('Portfolio error details:', error);
     return (
       <section id="portfolio" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <p className="text-red-600">Erreur lors du chargement des projets.</p>
+            <p className="text-gray-600 mt-2">Détails: {error.message}</p>
             <p className="text-gray-600 mt-2">Veuillez réessayer plus tard.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Si aucun projet n'est disponible pour la homepage
+  if (projects.length === 0) {
+    return (
+      <section id="portfolio" className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Nos Réalisations
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              Nos projets sont en cours de chargement...
+            </p>
+            <p className="text-gray-500 mb-8">
+              Aucun projet configuré pour l'affichage sur la page d'accueil.
+            </p>
+            <Link to="/projets">
+              <Button 
+                size="lg"
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+              >
+                Voir tous nos projets
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -80,6 +114,9 @@ const Portfolio = () => {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Découvrez quelques-uns de nos projets récents qui illustrent notre savoir-faire
           </p>
+          <p className="text-sm text-gray-500">
+            {projects.length} projet{projects.length > 1 ? 's' : ''} affiché{projects.length > 1 ? 's' : ''}
+          </p>
         </div>
 
         <div className={`transition-all duration-1000 ${
@@ -94,72 +131,79 @@ const Portfolio = () => {
             }}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
-              {projects.map((project, index) => (
-                <CarouselItem key={project.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white border-0 shadow-md">
-                    <div className="relative overflow-hidden">
-                      <img 
-                        src={project.image_url}
-                        alt={project.title}
-                        className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                        <div className="flex gap-3">
-                          <Button 
-                            size="sm"
-                            className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
-                            onClick={() => window.open(project.live_url, '_blank')}
-                          >
-                            <ExternalLink size={14} className="mr-1" />
-                            Voir
-                          </Button>
-                          <Button 
-                            size="sm"
-                            className="bg-red-600 text-white hover:bg-red-700 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
-                            onClick={() => window.open('https://wa.me/237674833400', '_blank')}
-                          >
-                            Commander
-                          </Button>
+              {projects.map((project, index) => {
+                console.log(`Rendering project ${index}:`, project);
+                return (
+                  <CarouselItem key={project.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                    <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white border-0 shadow-md">
+                      <div className="relative overflow-hidden">
+                        <img 
+                          src={project.image_url}
+                          alt={project.title}
+                          className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-110"
+                          onError={(e) => {
+                            console.error('Image failed to load:', project.image_url);
+                            e.currentTarget.src = 'https://via.placeholder.com/400x200?text=Image+Non+Disponible';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                          <div className="flex gap-3">
+                            <Button 
+                              size="sm"
+                              className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
+                              onClick={() => window.open(project.live_url, '_blank')}
+                            >
+                              <ExternalLink size={14} className="mr-1" />
+                              Voir
+                            </Button>
+                            <Button 
+                              size="sm"
+                              className="bg-red-600 text-white hover:bg-red-700 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
+                              onClick={() => window.open('https://wa.me/237674833400', '_blank')}
+                            >
+                              Commander
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    <CardContent className="p-4">
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-300 line-clamp-1">
-                        {project.title}
-                      </h3>
-                      <p className="text-gray-600 mb-3 text-sm line-clamp-2">
-                        {project.description}
-                      </p>
                       
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {project.tech.slice(0, 3).map((tech, idx) => (
-                          <span 
-                            key={idx}
-                            className="px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full font-medium"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.tech.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
-                            +{project.tech.length - 3}
-                          </span>
-                        )}
-                      </div>
+                      <CardContent className="p-4">
+                        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-300 line-clamp-1">
+                          {project.title}
+                        </h3>
+                        <p className="text-gray-600 mb-3 text-sm line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {project.tech.slice(0, 3).map((tech, idx) => (
+                            <span 
+                              key={idx}
+                              className="px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full font-medium"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                          {project.tech.length > 3 && (
+                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
+                              +{project.tech.length - 3}
+                            </span>
+                          )}
+                        </div>
 
-                      <Button 
-                        size="sm"
-                        className="bg-red-600 hover:bg-red-700 text-white w-full rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-                        onClick={() => window.open(project.live_url, '_blank')}
-                      >
-                        <ExternalLink size={12} className="mr-1" />
-                        Voir le site
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
+                        <Button 
+                          size="sm"
+                          className="bg-red-600 hover:bg-red-700 text-white w-full rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+                          onClick={() => window.open(project.live_url, '_blank')}
+                        >
+                          <ExternalLink size={12} className="mr-1" />
+                          Voir le site
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                );
+              })}
             </CarouselContent>
             
             <CarouselPrevious className="hidden md:flex -left-4 bg-white/90 hover:bg-white border-red-200 text-red-600 hover:text-red-700" />
