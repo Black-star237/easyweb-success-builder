@@ -89,7 +89,7 @@ const About = () => {
             
             <div className="lg:col-span-2 space-y-4">
               <h3 className="text-3xl font-bold text-gray-900">
-                Boris Frank
+                Boris MANGA
               </h3>
               <p className="text-xl text-red-600 font-semibold">
                 Fondateur & Développeur Principal
