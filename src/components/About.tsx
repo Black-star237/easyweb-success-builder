@@ -66,7 +66,7 @@ const About = () => {
           }`}>
             <div className="bg-gradient-to-tr from-red-100 to-orange-100 rounded-3xl p-8">
               <img 
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+                src="https://xtbceoemzdauoiytxwzd.supabase.co/storage/v1/object/public/bastringue//screenshot.png"
                 alt="Équipe EasyWeb au travail"
                 className="w-full h-auto rounded-2xl shadow-lg"
               />
