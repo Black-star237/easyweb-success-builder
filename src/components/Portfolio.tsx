@@ -3,51 +3,16 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
-import { ExternalLink } from 'lucide-react';
+import { useHomepageProjects } from '@/hooks/useProjects';
+import { ExternalLink, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Portfolio = () => {
   const [filter, setFilter] = useState('all');
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1, delay: 150 });
+  const { data: projects = [], isLoading, error } = useHomepageProjects();
 
-  const projects = [
-    {
-      id: 1,
-      title: "Restaurant Le Savoureux",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-      description: "Site vitrine moderne pour restaurant avec menu en ligne",
-      tech: ["React", "Tailwind CSS", "Framer Motion"],
-      liveUrl: "https://restaurant-demo.example.com"
-    },
-    {
-      id: 2,
-      title: "Boutique Mode Afrique",
-      category: "ecommerce",
-      image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334",
-      description: "E-commerce de vêtements africains avec paiement mobile",
-      tech: ["Next.js", "Stripe", "MongoDB"],
-      liveUrl: "https://boutique-afrique.example.com"
-    },
-    {
-      id: 3,
-      title: "Cabinet Médical",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-      description: "Site professionnel avec prise de rendez-vous en ligne",
-      tech: ["Vue.js", "Node.js", "MySQL"],
-      liveUrl: "https://cabinet-medical.example.com"
-    },
-    {
-      id: 4,
-      title: "Marketplace Locale",
-      category: "ecommerce",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-      description: "Plateforme de vente entre particuliers",
-      tech: ["React", "Firebase", "PayPal"],
-      liveUrl: "https://marketplace-local.example.com"
-    }
-  ];
+  console.log('Portfolio - Projects loaded:', projects);
 
   const categories = [
     { key: 'all', label: 'Tous' },
@@ -57,6 +22,32 @@ const Portfolio = () => {
 
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
   const { ref: projectsRef, visibleItems } = useStaggeredAnimation(filteredProjects.length, 100);
+
+  if (isLoading) {
+    return (
+      <section id="portfolio" className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <Loader2 className="mx-auto h-8 w-8 animate-spin text-red-600" />
+            <p className="mt-4 text-gray-600">Chargement des projets...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="portfolio" className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-red-600">Erreur lors du chargement des projets.</p>
+            <p className="text-gray-600 mt-2">Veuillez réessayer plus tard.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="portfolio" className="py-20 bg-white" ref={ref}>
@@ -104,7 +95,7 @@ const Portfolio = () => {
             >
               <div className="relative overflow-hidden">
                 <img 
-                  src={project.image}
+                  src={project.image_url}
                   alt={project.title}
                   className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-125 group-hover:rotate-2"
                 />
@@ -112,7 +103,7 @@ const Portfolio = () => {
                   <div className="flex gap-3">
                     <Button 
                       className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
-                      onClick={() => window.open(project.liveUrl, '_blank')}
+                      onClick={() => window.open(project.live_url, '_blank')}
                     >
                       <ExternalLink size={16} className="mr-2" />
                       Voir le site
@@ -149,7 +140,7 @@ const Portfolio = () => {
                 <Button 
                   size="sm"
                   className="bg-red-600 hover:bg-red-700 text-white w-full rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-                  onClick={() => window.open(project.liveUrl, '_blank')}
+                  onClick={() => window.open(project.live_url, '_blank')}
                 >
                   <ExternalLink size={14} className="mr-2" />
                   Voir le site live

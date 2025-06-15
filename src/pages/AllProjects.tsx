@@ -3,87 +3,16 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { useProjects } from '@/hooks/useProjects';
+import { ArrowLeft, ExternalLink, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AllProjects = () => {
   const [filter, setFilter] = useState('all');
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1, delay: 150 });
+  const { data: allProjects = [], isLoading, error } = useProjects();
 
-  const allProjects = [
-    {
-      id: 1,
-      title: "Restaurant Le Savoureux",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-      description: "Site vitrine moderne pour restaurant avec menu en ligne",
-      tech: ["React", "Tailwind CSS", "Framer Motion"],
-      liveUrl: "https://restaurant-demo.example.com"
-    },
-    {
-      id: 2,
-      title: "Boutique Mode Afrique",
-      category: "ecommerce",
-      image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334",
-      description: "E-commerce de vêtements africains avec paiement mobile",
-      tech: ["Next.js", "Stripe", "MongoDB"],
-      liveUrl: "https://boutique-afrique.example.com"
-    },
-    {
-      id: 3,
-      title: "Cabinet Médical",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-      description: "Site professionnel avec prise de rendez-vous en ligne",
-      tech: ["Vue.js", "Node.js", "MySQL"],
-      liveUrl: "https://cabinet-medical.example.com"
-    },
-    {
-      id: 4,
-      title: "Marketplace Locale",
-      category: "ecommerce",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-      description: "Plateforme de vente entre particuliers",
-      tech: ["React", "Firebase", "PayPal"],
-      liveUrl: "https://marketplace-local.example.com"
-    },
-    {
-      id: 5,
-      title: "École Primaire Saint-Paul",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9d1",
-      description: "Site web pour école avec espace parents et élèves",
-      tech: ["WordPress", "PHP", "MySQL"],
-      liveUrl: "https://ecole-saint-paul.example.com"
-    },
-    {
-      id: 6,
-      title: "Pharmacie Central Plus",
-      category: "ecommerce",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f",
-      description: "E-commerce pharmaceutique avec livraison à domicile",
-      tech: ["Shopify", "React", "Stripe"],
-      liveUrl: "https://pharmacie-central.example.com"
-    },
-    {
-      id: 7,
-      title: "Garage Auto Expert",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3",
-      description: "Site vitrine pour garage automobile avec prise de RDV",
-      tech: ["HTML5", "CSS3", "JavaScript"],
-      liveUrl: "https://garage-auto-expert.example.com"
-    },
-    {
-      id: 8,
-      title: "Immobilier Douala Premium",
-      category: "vitrine",
-      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa",
-      description: "Plateforme immobilière avec recherche avancée",
-      tech: ["React", "Node.js", "PostgreSQL"],
-      liveUrl: "https://immobilier-douala.example.com"
-    }
-  ];
+  console.log('AllProjects - Projects loaded:', allProjects);
 
   const categories = [
     { key: 'all', label: 'Tous' },
@@ -93,6 +22,52 @@ const AllProjects = () => {
 
   const filteredProjects = filter === 'all' ? allProjects : allProjects.filter(p => p.category === filter);
   const { ref: projectsRef, visibleItems } = useStaggeredAnimation(filteredProjects.length, 100);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="bg-gray-50 py-8">
+          <div className="container mx-auto px-4">
+            <Link 
+              to="/"
+              className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 mb-6 font-medium transition-colors duration-300"
+            >
+              <ArrowLeft size={20} />
+              Retour à l'accueil
+            </Link>
+            
+            <div className="text-center">
+              <Loader2 className="mx-auto h-8 w-8 animate-spin text-red-600" />
+              <p className="mt-4 text-gray-600">Chargement des projets...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="bg-gray-50 py-8">
+          <div className="container mx-auto px-4">
+            <Link 
+              to="/"
+              className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 mb-6 font-medium transition-colors duration-300"
+            >
+              <ArrowLeft size={20} />
+              Retour à l'accueil
+            </Link>
+            
+            <div className="text-center">
+              <p className="text-red-600">Erreur lors du chargement des projets.</p>
+              <p className="text-gray-600 mt-2">Veuillez réessayer plus tard.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -154,7 +129,7 @@ const AllProjects = () => {
               >
                 <div className="relative overflow-hidden">
                   <img 
-                    src={project.image}
+                    src={project.image_url}
                     alt={project.title}
                     className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-125 group-hover:rotate-2"
                   />
@@ -162,7 +137,7 @@ const AllProjects = () => {
                     <div className="flex gap-3">
                       <Button 
                         className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
-                        onClick={() => window.open(project.liveUrl, '_blank')}
+                        onClick={() => window.open(project.live_url, '_blank')}
                       >
                         <ExternalLink size={16} className="mr-2" />
                         Voir le site
@@ -200,7 +175,7 @@ const AllProjects = () => {
                     <Button 
                       size="sm"
                       className="bg-red-600 hover:bg-red-700 text-white flex-1 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-                      onClick={() => window.open(project.liveUrl, '_blank')}
+                      onClick={() => window.open(project.live_url, '_blank')}
                     >
                       <ExternalLink size={14} className="mr-2" />
                       Voir le site
