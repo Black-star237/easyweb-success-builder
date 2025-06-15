@@ -12,7 +12,7 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
   const { threshold = 0.1, rootMargin = '0px', exitAnimation = false, delay = 0 } = options;
   const [isVisible, setIsVisible] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,7 +45,7 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
 
 export const useStaggeredAnimation = (itemCount: number, baseDelay = 100) => {
   const [visibleItems, setVisibleItems] = useState<boolean[]>(new Array(itemCount).fill(false));
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
+import { ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Portfolio = () => {
   const [filter, setFilter] = useState('all');
@@ -15,7 +17,8 @@ const Portfolio = () => {
       category: "vitrine",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
       description: "Site vitrine moderne pour restaurant avec menu en ligne",
-      tech: ["React", "Tailwind CSS", "Framer Motion"]
+      tech: ["React", "Tailwind CSS", "Framer Motion"],
+      liveUrl: "https://restaurant-demo.example.com"
     },
     {
       id: 2,
@@ -23,7 +26,8 @@ const Portfolio = () => {
       category: "ecommerce",
       image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334",
       description: "E-commerce de vêtements africains avec paiement mobile",
-      tech: ["Next.js", "Stripe", "MongoDB"]
+      tech: ["Next.js", "Stripe", "MongoDB"],
+      liveUrl: "https://boutique-afrique.example.com"
     },
     {
       id: 3,
@@ -31,7 +35,8 @@ const Portfolio = () => {
       category: "vitrine",
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
       description: "Site professionnel avec prise de rendez-vous en ligne",
-      tech: ["Vue.js", "Node.js", "MySQL"]
+      tech: ["Vue.js", "Node.js", "MySQL"],
+      liveUrl: "https://cabinet-medical.example.com"
     },
     {
       id: 4,
@@ -39,7 +44,8 @@ const Portfolio = () => {
       category: "ecommerce",
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
       description: "Plateforme de vente entre particuliers",
-      tech: ["React", "Firebase", "PayPal"]
+      tech: ["React", "Firebase", "PayPal"],
+      liveUrl: "https://marketplace-local.example.com"
     }
   ];
 
@@ -103,12 +109,21 @@ const Portfolio = () => {
                   className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-125 group-hover:rotate-2"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                  <Button 
-                    className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
-                    onClick={() => window.open('https://wa.me/237674833400', '_blank')}
-                  >
-                    Vous voulez le même ?
-                  </Button>
+                  <div className="flex gap-3">
+                    <Button 
+                      className="bg-white text-gray-900 hover:bg-gray-100 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
+                      onClick={() => window.open(project.liveUrl, '_blank')}
+                    >
+                      <ExternalLink size={16} className="mr-2" />
+                      Voir le site
+                    </Button>
+                    <Button 
+                      className="bg-red-600 text-white hover:bg-red-700 rounded-full font-semibold transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"
+                      onClick={() => window.open('https://wa.me/237674833400', '_blank')}
+                    >
+                      Commander
+                    </Button>
+                  </div>
                 </div>
               </div>
               
@@ -120,7 +135,7 @@ const Portfolio = () => {
                   {project.description}
                 </p>
                 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech, idx) => (
                     <span 
                       key={idx}
@@ -130,6 +145,15 @@ const Portfolio = () => {
                     </span>
                   ))}
                 </div>
+
+                <Button 
+                  size="sm"
+                  className="bg-red-600 hover:bg-red-700 text-white w-full rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+                  onClick={() => window.open(project.liveUrl, '_blank')}
+                >
+                  <ExternalLink size={14} className="mr-2" />
+                  Voir le site live
+                </Button>
               </CardContent>
             </Card>
           ))}
@@ -138,13 +162,14 @@ const Portfolio = () => {
         <div className={`text-center mt-16 transition-all duration-1000 ${
           isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'
         }`}>
-          <Button 
-            size="lg"
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"
-            onClick={() => window.open('https://wa.me/237674833400', '_blank')}
-          >
-            Voir plus de projets
-          </Button>
+          <Link to="/projets">
+            <Button 
+              size="lg"
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"
+            >
+              Voir plus de projets
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
