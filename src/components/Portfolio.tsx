@@ -10,7 +10,11 @@ import { Link } from 'react-router-dom';
 import type { CarouselApi } from '@/components/ui/carousel';
 
 const Portfolio = () => {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1, delay: 150 });
+  const { ref, isVisible } = useScrollAnimation({ 
+    threshold: 0.05, 
+    rootMargin: '50px',
+    delay: 150 
+  });
   const { data: projects = [], isLoading, error } = useHomepageProjects();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -20,6 +24,7 @@ const Portfolio = () => {
   console.log('Portfolio - Error state:', error);
   console.log('Portfolio - Projects count:', projects.length);
   console.log('Portfolio - isVisible:', isVisible);
+  console.log('Portfolio - Component rendered at:', new Date().toISOString());
 
   // Auto-scroll functionality
   useEffect(() => {
@@ -103,9 +108,16 @@ const Portfolio = () => {
     );
   }
 
+  console.log('Portfolio - About to render main section with isVisible:', isVisible);
+
   return (
     <section id="portfolio" className="py-20 bg-white" ref={ref}>
       <div className="container mx-auto px-4">
+        {/* Enhanced debugging info */}
+        <div className="hidden">
+          Debug: isVisible={isVisible ? 'true' : 'false'}, projects={projects.length}
+        </div>
+
         <div className={`text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
