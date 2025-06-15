@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Monitor, ShoppingCart, Search, RefreshCw } from 'lucide-react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 
 const Services = () => {
-  const [ref, isVisible] = useScrollAnimation();
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1, delay: 100 });
+  const { ref: staggerRef, visibleItems } = useStaggeredAnimation(4, 120);
 
   const services = [
     {
@@ -51,9 +52,13 @@ const Services = () => {
   return (
     <section id="services" className="py-20 bg-gray-50" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mb-16 transition-all duration-1000 ${
+          isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
+        }`}>
           <div className="inline-flex items-center gap-2 mb-4">
-            <Badge className="bg-red-600 text-white px-4 py-2 text-lg font-bold animate-bounce-subtle">
+            <Badge className={`bg-red-600 text-white px-4 py-2 text-lg font-bold transition-all duration-500 ${
+              isVisible ? 'animate-bounce-subtle' : 'opacity-0'
+            }`}>
               🔥 PROMOTION 2 SEMAINES
             </Badge>
           </div>
@@ -63,24 +68,27 @@ const Services = () => {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Des solutions web complètes adaptées à vos besoins et votre budget
           </p>
-          <p className="text-lg text-red-600 font-semibold mt-2">
+          <div className={`text-lg text-red-600 font-semibold mt-2 transition-all duration-700 ${
+            isVisible ? 'animate-fade-in' : 'opacity-0'
+          } stagger-2`}>
             Prix promotionnels jusqu'au 31 janvier !
-          </p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" ref={staggerRef}>
           {services.map((service, index) => (
             <Card 
               key={index} 
               className={`hover:shadow-xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 bg-white border-0 shadow-md group relative ${
-                isVisible 
-                  ? `animate-scale-in stagger-${index + 2}` 
-                  : 'opacity-0 scale-90'
+                visibleItems[index]
+                  ? 'animate-zoom-in' 
+                  : 'opacity-0 scale-50'
               }`}
-              style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
             >
               {service.isOnPromotion && (
-                <Badge className="absolute -top-2 -right-2 bg-red-600 text-white z-10 animate-pulse">
+                <Badge className={`absolute -top-2 -right-2 bg-red-600 text-white z-10 transition-all duration-300 ${
+                  visibleItems[index] ? 'animate-pulse' : 'opacity-0'
+                }`}>
                   PROMO
                 </Badge>
               )}
@@ -129,7 +137,9 @@ const Services = () => {
           ))}
         </div>
 
-        <div className={`text-center mt-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mt-16 transition-all duration-1000 ${
+          isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'
+        }`}>
           <Button 
             size="lg"
             className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"

@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 
 const Portfolio = () => {
   const [filter, setFilter] = useState('all');
-  const [ref, isVisible] = useScrollAnimation();
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1, delay: 150 });
 
   const projects = [
     {
@@ -50,11 +50,14 @@ const Portfolio = () => {
   ];
 
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+  const { ref: projectsRef, visibleItems } = useStaggeredAnimation(filteredProjects.length, 100);
 
   return (
     <section id="portfolio" className="py-20 bg-white" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mb-16 transition-all duration-1000 ${
+          isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Nos Réalisations
           </h2>
@@ -63,8 +66,10 @@ const Portfolio = () => {
           </p>
 
           {/* Filter buttons */}
-          <div className={`flex justify-center gap-4 mb-8 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up stagger-1' : 'opacity-0 translate-y-8'}`}>
-            {categories.map((category) => (
+          <div className={`flex justify-center gap-4 mb-8 transition-all duration-1000 ${
+            isVisible ? 'animate-fade-in-up stagger-1' : 'opacity-0 translate-y-8'
+          }`}>
+            {categories.map((category, index) => (
               <Button
                 key={category.key}
                 variant={filter === category.key ? "default" : "outline"}
@@ -72,7 +77,7 @@ const Portfolio = () => {
                   filter === category.key 
                     ? 'bg-red-600 hover:bg-red-700 text-white' 
                     : 'border-red-600 text-red-600 hover:bg-red-600 hover:text-white'
-                }`}
+                } ${isVisible ? `animate-spring-in stagger-${index + 2}` : 'opacity-0'}`}
                 onClick={() => setFilter(category.key)}
               >
                 {category.label}
@@ -81,16 +86,15 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" ref={projectsRef}>
           {filteredProjects.map((project, index) => (
             <Card 
               key={project.id} 
               className={`group overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 bg-white border-0 shadow-md ${
-                isVisible 
-                  ? `animate-scale-in stagger-${index + 2}` 
-                  : 'opacity-0 scale-90'
+                visibleItems[index]
+                  ? 'animate-flip-in' 
+                  : 'opacity-0 -rotate-y-90'
               }`}
-              style={{ animationDelay: `${index * 0.1 + 0.4}s` }}
             >
               <div className="relative overflow-hidden">
                 <img 
@@ -131,7 +135,9 @@ const Portfolio = () => {
           ))}
         </div>
 
-        <div className={`text-center mt-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mt-16 transition-all duration-1000 ${
+          isVisible ? 'animate-fade-in-up stagger-6' : 'opacity-0 translate-y-8'
+        }`}>
           <Button 
             size="lg"
             className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"

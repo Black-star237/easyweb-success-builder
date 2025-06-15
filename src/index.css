@@ -96,12 +96,17 @@
 }
 
 @layer utilities {
+  /* Enhanced entrance animations */
   .animate-fade-in {
     animation: fade-in 0.8s ease-out forwards;
   }
 
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-down {
+    animation: fade-in-down 0.8s ease-out forwards;
   }
 
   .animate-slide-in-left {
@@ -124,13 +129,47 @@
     animation: bounce-subtle 2s ease-in-out infinite;
   }
 
+  /* Exit animations */
+  .animate-fade-out {
+    animation: fade-out 0.5s ease-out forwards;
+  }
+
+  .animate-slide-out-left {
+    animation: slide-out-left 0.5s ease-out forwards;
+  }
+
+  .animate-slide-out-right {
+    animation: slide-out-right 0.5s ease-out forwards;
+  }
+
+  .animate-scale-out {
+    animation: scale-out 0.4s ease-out forwards;
+  }
+
+  /* Enhanced entrance with spring effect */
+  .animate-spring-in {
+    animation: spring-in 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  .animate-zoom-in {
+    animation: zoom-in 0.6s ease-out forwards;
+  }
+
+  .animate-flip-in {
+    animation: flip-in 0.7s ease-out forwards;
+  }
+
+  /* Stagger delays */
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
   .stagger-6 { animation-delay: 0.6s; }
+  .stagger-7 { animation-delay: 0.7s; }
+  .stagger-8 { animation-delay: 0.8s; }
 
+  /* Keyframes */
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -150,6 +189,28 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in-down {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
     }
   }
 
@@ -175,6 +236,28 @@
     }
   }
 
+  @keyframes slide-out-left {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+  }
+
+  @keyframes slide-out-right {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+  }
+
   @keyframes scale-in {
     from {
       opacity: 0;
@@ -183,6 +266,50 @@
     to {
       opacity: 1;
       transform: scale(1);
+    }
+  }
+
+  @keyframes scale-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+  }
+
+  @keyframes spring-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8) translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes zoom-in {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes flip-in {
+    from {
+      opacity: 0;
+      transform: rotateY(-90deg);
+    }
+    to {
+      opacity: 1;
+      transform: rotateY(0);
     }
   }
 
@@ -205,7 +332,7 @@
   }
 }
 
-/* Intersection Observer animations */
+/* Enhanced section animations */
 .fade-in-section {
   opacity: 0;
   transform: translateY(20px);
@@ -215,4 +342,26 @@
 .fade-in-section.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.slide-in-section {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-in-section.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scale-in-section {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scale-in-section.is-visible {
+  opacity: 1;
+  transform: scale(1);
 }
