@@ -19,6 +19,7 @@ const Portfolio = () => {
   console.log('Portfolio - Loading state:', isLoading);
   console.log('Portfolio - Error state:', error);
   console.log('Portfolio - Projects count:', projects.length);
+  console.log('Portfolio - isVisible:', isVisible);
 
   // Auto-scroll functionality
   useEffect(() => {
@@ -106,7 +107,7 @@ const Portfolio = () => {
     <section id="portfolio" className="py-20 bg-white" ref={ref}>
       <div className="container mx-auto px-4">
         <div className={`text-center mb-16 transition-all duration-1000 ${
-          isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Nos Réalisations
@@ -119,8 +120,8 @@ const Portfolio = () => {
           </p>
         </div>
 
-        <div className={`transition-all duration-1000 ${
-          isVisible ? 'animate-fade-in-up stagger-2' : 'opacity-0 translate-y-8'
+        <div className={`transition-all duration-1000 delay-200 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           <Carousel
             setApi={setApi}
@@ -224,8 +225,8 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className={`text-center mt-16 transition-all duration-1000 ${
-          isVisible ? 'animate-fade-in-up stagger-4' : 'opacity-0 translate-y-8'
+        <div className={`text-center mt-16 transition-all duration-1000 delay-400 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           <Link to="/projets">
             <Button 

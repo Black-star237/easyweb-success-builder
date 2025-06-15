@@ -15,13 +15,21 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentRef = ref.current;
+    if (!currentRef) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => {
+          if (delay > 0) {
+            setTimeout(() => {
+              setIsVisible(true);
+              setHasAnimated(true);
+            }, delay);
+          } else {
             setIsVisible(true);
             setHasAnimated(true);
-          }, delay);
+          }
         } else if (exitAnimation && hasAnimated) {
           setIsVisible(false);
         }
@@ -29,14 +37,10 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
       { threshold, rootMargin }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    observer.observe(currentRef);
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.unobserve(currentRef);
     };
   }, [threshold, rootMargin, exitAnimation, hasAnimated, delay]);
 
@@ -48,6 +52,9 @@ export const useStaggeredAnimation = (itemCount: number, baseDelay = 100) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentRef = ref.current;
+    if (!currentRef) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -66,14 +73,10 @@ export const useStaggeredAnimation = (itemCount: number, baseDelay = 100) => {
       { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    observer.observe(currentRef);
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.unobserve(currentRef);
     };
   }, [itemCount, baseDelay]);
 
