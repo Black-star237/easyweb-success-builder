@@ -1,0 +1,25 @@
+
+{
+  "name": "EasyWeb - Création de sites web professionnels",
+  "short_name": "EasyWeb",
+  "description": "Agence de création de sites web au Cameroun",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/lovable-uploads/e326e6f8-eb14-4e87-a39d-52531111fe9b.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/lovable-uploads/e326e6f8-eb14-4e87-a39d-52531111fe9b.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "fr"
+}

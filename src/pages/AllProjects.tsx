@@ -1,5 +1,7 @@
-
 import React, { useState } from 'react';
+import SEO from '@/components/SEO';
+import { useStructuredData } from '@/hooks/useStructuredData';
+import OptimizedImage from '@/components/OptimizedImage';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
@@ -11,8 +13,14 @@ const AllProjects = () => {
   const [filter, setFilter] = useState('all');
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1, delay: 150 });
   const { data: allProjects = [], isLoading, error } = useProjects();
+  const { getBreadcrumbData } = useStructuredData();
 
   console.log('AllProjects - Projects loaded:', allProjects);
+
+  const breadcrumbData = getBreadcrumbData([
+    { name: 'Accueil', url: 'https://easyweb.eswb.site' },
+    { name: 'Tous nos Projets', url: 'https://easyweb.eswb.site/projets' }
+  ]);
 
   const categories = [
     { key: 'all', label: 'Tous' },
@@ -26,6 +34,10 @@ const AllProjects = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white">
+        <SEO
+          title="Chargement des projets - EasyWeb"
+          description="Chargement de nos réalisations web..."
+        />
         <div className="bg-gray-50 py-8">
           <div className="container mx-auto px-4">
             <Link 
@@ -49,6 +61,10 @@ const AllProjects = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-white">
+        <SEO
+          title="Erreur - EasyWeb"
+          description="Erreur lors du chargement des projets."
+        />
         <div className="bg-gray-50 py-8">
           <div className="container mx-auto px-4">
             <Link 
@@ -71,6 +87,15 @@ const AllProjects = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Tous nos Projets - Portfolio EasyWeb | Sites web réalisés au Cameroun"
+        description="Découvrez notre portfolio complet : sites vitrine, e-commerce et applications web réalisés au Cameroun. Plus de 20 projets livrés avec succès."
+        keywords="portfolio web Cameroun, réalisations sites internet, projets web Yaoundé, exemples sites e-commerce"
+        url="/projets"
+        type="website"
+        structuredData={breadcrumbData}
+      />
+
       {/* Header avec navigation retour */}
       <div className="bg-gray-50 py-8">
         <div className="container mx-auto px-4">
@@ -128,10 +153,12 @@ const AllProjects = () => {
                 }`}
               >
                 <div className="relative overflow-hidden">
-                  <img 
+                  <OptimizedImage
                     src={project.image_url}
-                    alt={project.title}
-                    className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-125 group-hover:rotate-2"
+                    alt={`Projet ${project.title} - Site web réalisé par EasyWeb`}
+                    className="w-full h-48 transition-all duration-500 group-hover:scale-125 group-hover:rotate-2"
+                    width={400}
+                    height={300}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                     <div className="flex gap-3">
