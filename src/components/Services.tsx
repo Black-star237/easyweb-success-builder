@@ -59,7 +59,7 @@ const Services = () => {
             <Badge className={`bg-red-600 text-white px-4 py-2 text-lg font-bold transition-all duration-500 ${
               isVisible ? 'animate-bounce-subtle' : 'opacity-0'
             }`}>
-              🔥 PROMOTION 2 SEMAINES
+              🔥 PROMOTION 1 SEMAINES
             </Badge>
           </div>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -71,7 +71,7 @@ const Services = () => {
           <div className={`text-lg text-red-600 font-semibold mt-2 transition-all duration-700 ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           } stagger-2`}>
-            Prix promotionnels jusqu'au 31 janvier !
+            Prix promotionnels jusqu'au 22 juin !
           </div>
         </div>
 
