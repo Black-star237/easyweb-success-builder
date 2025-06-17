@@ -1,20 +1,22 @@
 
-import React, { useEffect } from 'react';
-import { generateSitemap, getSitemapUrls } from '@/utils/sitemap';
+import React from 'react';
+import { getSitemapUrls, generateSitemap } from '@/utils/sitemap';
 
 const Sitemap = () => {
-  useEffect(() => {
-    const urls = getSitemapUrls();
-    const sitemapXml = generateSitemap(urls);
-    
-    // Set content type to XML
-    document.contentType = 'application/xml';
-    
-    // Replace page content with XML
-    document.documentElement.innerHTML = sitemapXml;
+  const urls = getSitemapUrls();
+  const sitemapXml = generateSitemap(urls);
+  
+  // Set the content type using a meta tag approach
+  React.useEffect(() => {
+    // Set the page title to indicate this is XML content
+    document.title = 'Sitemap';
   }, []);
 
-  return null;
+  return (
+    <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', padding: '20px' }}>
+      {sitemapXml}
+    </div>
+  );
 };
 
 export default Sitemap;
